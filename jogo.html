@@ -90,14 +90,16 @@
 		}
 	}
 	
-		
-	function pausarResumir () {
-		if (exec == true) {
-			exec = false;
-			console.log (exec);
-		} else {
-			exec = true;
-			console.log (exec);
+	function pausarResumir (evento) {
+		var tecla = evento.which;
+		if (tecla == 32){ //tecla 32: espaço
+			if (exec == true) {
+				exec = false;
+				console.log (exec);
+			} else {
+				exec = true;
+				console.log (exec);
+			}
 		}
 	}
 	

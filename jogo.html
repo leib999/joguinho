@@ -16,7 +16,7 @@
 		if (pos_x < 0) {
 			pos_x = 0;
 		}
-		if (x > 330) {
+		if (pos_x > 330) {
 			pos_x = 330;
 		}
 		pincel.fillStyle = 'darkgray';
@@ -64,7 +64,7 @@
 		if ((pos[0] > 390)||(pos[0] < 10)) {
 			v[0] *= -1;
 		}
-		if ((pos[1] > 470)||(pos[1] < 10)) {
+		if ((pos[1] > 465)||(pos[1] < 10)) {
 			v[1] *= -1;
 		}
 		return v;

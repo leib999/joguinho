@@ -8,8 +8,8 @@
 	pincel.fillRect(0, 0, 400, 500);
 	
 	var exec = true;
-	var pos = [0, 0];
-	var vel = [10, 10];
+	var pos = [20, 20];
+	var vel = [1, 1];
 	
 	function desenhaBarra(x) {
 		pos_x = x - 35;
@@ -21,6 +21,13 @@
 		}
 		pincel.fillStyle = 'darkgray';
 		pincel.fillRect(pos_x, 480, 70, 20);
+	}
+	
+	function desenhaCirculo(coords, raio) {
+		pincel.fillStyle = 'blue';
+		pincel.beginPath();
+		pincel.arc(coords[0], coords[1], raio, 0, 2 * Math.PI);
+		pincel.fill();
 	}
 	
 	function limpaTela() {
@@ -54,10 +61,10 @@
 	}
 	
 	function atualizaVelocidade (v) {
-		if ((pos[0] > 400)||(pos[0] < 0)) {
+		if ((pos[0] > 390)||(pos[0] < 10)) {
 			v[0] *= -1;
 		}
-		if ((pos[1] > 500)||(pos[1] < 0)) {
+		if ((pos[1] > 470)||(pos[1] < 10)) {
 			v[1] *= -1;
 		}
 		return v;

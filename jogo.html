@@ -7,20 +7,21 @@
 	pincel.fillStyle = 'lightgray';
 	pincel.fillRect(0, 0, 400, 500);
 	
-	var exec = true;
-	var pos_cir = [20, 20];
-	var vel = [1, 1];
+	var exec = true;  		//jogo em execução ou pausado
+	var pos_cir = [20, 20]; //posição do círculo
+	var vel = [1, 1]; 		//velocidade do círculo
+	var pos_barra = 0;
 	
 	function desenhaBarra(x) {
-		var pos_cir_x = x - 35;
-		if (pos_cir_x < 0) {
-			pos_cir_x = 0;
+		var pos_barra = x - 35;
+		if (pos_barra < 0) {
+			pos_barra = 0;
 		}
-		if (pos_cir_x > 330) {
-			pos_cir_x = 330;
+		if (pos_barra > 330) {
+			pos_barra = 330;
 		}
 		pincel.fillStyle = 'darkgray';
-		pincel.fillRect(pos_cir_x, 480, 70, 20);
+		pincel.fillRect(pos_barra, 480, 70, 20);
 	}
 	
 	function desenhaCirculo(coords, raio) {
@@ -31,14 +32,20 @@
 	}
 	
 	function limpaTela() {
-		pincel.clearRect(0, 0, 400, 500);
+		pincel.clearRect(0, 0, 400, 480);
 		pincel.fillStyle = 'lightgray';
-		pincel.fillRect(0, 0, 400, 500);
+		pincel.fillRect(0, 0, 400, 480);
+	}
+	
+	function limpaTelaInferior() {
+		pincel.clearRect(0, 480, 400, 220);
+		pincel.fillStyle = 'black';
+		pincel.fillRect(0, 480, 400, 20);
 	}
 	
 	function moveBarra (evento) {
 		var x = evento.pageX - tela.offsetLeft;
-		limpaTela();
+		limpaTelaInferior();
 		desenhaBarra(x);
 	}
 	
@@ -76,7 +83,7 @@
 			vel = atualizaVelocidade (vel);
 			limpaTela();
 			desenhaCirculo(pos_cir, 10);
-			desenhaBarra(pos[0]);
+			desenhaBarra(pos_barra);
 		}
 	}
 	

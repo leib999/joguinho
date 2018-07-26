@@ -5,11 +5,34 @@
 	var tela = document.querySelector('canvas');
 	var pincel = tela.getContext('2d');
 	pincel.fillStyle = 'lightgray';
-	pincel.fillRect(0, 0, 600, 800);
+	pincel.fillRect(0, 0, 400, 500);
 	
 	var exec = true;
 	var pos = [0, 0];
 	var vel = [10, 10];
+	
+	function desenhaBarra(x) {
+		pos_x = x - 35;
+		if (pos_x < 0) {
+			pos_x = 0;
+		}
+		pincel.fillStyle = 'darkgray';
+		pincel.fillRect(pos_x, 0, 70, 20);
+	}
+	
+	function limpaTela() {
+		pincel.clearRect(0, 0, 400, 500);
+		pincel.fillStyle = 'lightgray';
+		pincel.fillRect(0, 0, 400, 500);
+	}
+	
+	function moveBarra (evento) {
+		var x = evento.pageX - tela.offsetLeft;
+		limpaTela();
+		desenhaBarra(x);
+	}
+	
+	tela.onmousemove = moveBarra;
 	
 	
 </script>

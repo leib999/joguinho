@@ -44,10 +44,12 @@
 	}
 	
 	function moveBarra (evento) {
-		var x = evento.pageX - tela.offsetLeft;
-		pos_barra = x;
-		limpaTelaInferior();
-		desenhaBarra(pos_barra);
+		if (exec){
+			var x = evento.pageX - tela.offsetLeft;
+			pos_barra = x;
+			limpaTelaInferior();
+			desenhaBarra(pos_barra);
+		}
 	}
 	
 	function somaVetorial (v1, v2) {

@@ -16,6 +16,9 @@
 		if (pos_x < 0) {
 			pos_x = 0;
 		}
+		if (x > 330) {
+			pos_x = 330;
+		}
 		pincel.fillStyle = 'darkgray';
 		pincel.fillRect(pos_x, 0, 70, 20);
 	}

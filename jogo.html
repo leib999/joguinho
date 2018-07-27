@@ -12,7 +12,7 @@
 	var exec = true;  		//jogo em execução ou pausado
 	var pos_cir = [20, 20]; //posição do centro do círculo
 	var raio = 10;			//raio do círculo
-	var vel = [0.6, 0.6]; 	//velocidade do círculo
+	var vel = [1.2, 1.2]; 	//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
 	var w_bar = 70;		//largura da barra
 	var semi_barra = w_bar/2;
@@ -77,11 +77,18 @@
 	}
 	
 	function atualizaVelocidade (v) {
-		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < 10)) {
-			v[0] *= -1;
+		
+		if (pos_cir[0] > (w-raio)){
+			v[0] = -Math.abs(v[0]);
 		}
-		if ((pos_cir[1] > 470)||(pos_cir[1] < 10)) {
-			v[1] *= -1;
+		if(pos_cir[0] < 10) {
+			v[0] = Math.abs(v[0]);
+		}
+		if (pos_cir[1] > 470){
+			v[1] = -Math.abs(v[0]);
+		}
+		if(pos_cir[1] < 10){
+			v[1] = Math.abs(v[0]);
 		}
 		return v;
 	}

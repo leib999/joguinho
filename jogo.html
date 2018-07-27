@@ -2,15 +2,20 @@
 
 <script>
 
+	var w = 400;
+	var h = 500;
 	var tela = document.querySelector('canvas');
 	var pincel = tela.getContext('2d');
 	pincel.fillStyle = 'lightgray';
-	pincel.fillRect(0, 0, 400, 500);
+	pincel.fillRect(0, 0, w, 500);
 	
 	var exec = true;  		//jogo em execução ou pausado
 	var pos_cir = [20, 20]; //posição do centro do círculo
-	var vel = [0.6, 0.6]; 		//velocidade do círculo
+	var raio = 10;			//raio do círculo
+	var vel = [0.6, 0.6]; 	//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
+	var larg_bar = 70;		//largura da barra
+	var alt_bar = 20;		//altura da barra
 	
 	function desenhaBarra(x) {
 		if (x < 35) {
@@ -32,15 +37,15 @@
 	}
 	
 	function limpaTela() {
-		pincel.clearRect(0, 0, 400, 480);
+		pincel.clearRect(0, 0, w, 480);
 		pincel.fillStyle = 'lightgray';
-		pincel.fillRect(0, 0, 400, 480);
+		pincel.fillRect(0, 0, w, 480);
 	}
 	
 	function limpaTelaInferior() {
-		pincel.clearRect(0, 480, 400, 220);
+		pincel.clearRect(0, 480, w, 220);
 		pincel.fillStyle = 'black';
-		pincel.fillRect(0, 480, 400, 20);
+		pincel.fillRect(0, 480, w, 20);
 	}
 	
 	function moveBarra (evento) {
@@ -71,7 +76,7 @@
 	}
 	
 	function atualizaVelocidade (v) {
-		if ((pos_cir[0] > 390)||(pos_cir[0] < 10)) {
+		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < 10)) {
 			v[0] *= -1;
 		}
 		if ((pos_cir[1] > 470)||(pos_cir[1] < 10)) {
@@ -82,7 +87,7 @@
 	
 	function detectarColisaoComParedes () {
 		var col = false;
-		if ((pos_cir[0] > 390)||(pos_cir[0] < 10)) {
+		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < 10)) {
 			col = true;
 		}
 		if(pos_cir[1] < 10) {
@@ -98,6 +103,8 @@
 			//console.log(dif);
 		} else {
 			if (dif > 35) {  //caso 1: círculo a direita da barra
+				
+			
 				vel = atualizaVelocidade (vel);
 				console.log("direita")
 			}

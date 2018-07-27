@@ -11,6 +11,7 @@
 	var pos_cir = [20, 20]; //posição do centro do círculo
 	var vel = [1, 1]; 		//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
+	var col_barra = false;  //variavel que indica colisão do círculo com a barra
 	
 	function desenhaBarra(x) {
 		if (x < 35) {
@@ -92,21 +93,20 @@
 	}
 	
 	function detectarColisaoComBarra () {
-		var col = false;
+		col_barra = false;
 		if(pos_cir[1] > 470){
 			var dif = Math.abs(pos_cir[0] - pos_barra);
 			if (dif < 35){
-				col = true;
+				col_barra = true;
 			}
 		}
-		return col;
 	}
 	
 	function detectarColisao() {
 		var col_par = detectarColisaoComParedes();
 		if (col_par) console.log("col_par: " + col_par);
-		var col_barra = detectarColisaoComBarra();
-		if (col_barra) console.log("col_barraar: " + col_barra);
+		detectarColisaoComBarra();
+		if (col_barra) console.log("col_barra: " + col_barra);
 	}
 	
 	function atualizaTela() {

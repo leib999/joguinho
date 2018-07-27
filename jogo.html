@@ -9,7 +9,7 @@
 	
 	var exec = true;  		//jogo em execução ou pausado
 	var pos_cir = [20, 20]; //posição do centro do círculo
-	var vel = [1, 1]; 		//velocidade do círculo
+	var vel = [0.6, 0.6]; 		//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
 	
 	function desenhaBarra(x) {
@@ -91,17 +91,30 @@
 		return (col);
 	}
 	
-	// function detectarColisaoComBarraPrecisa () {
-		// var col = false;
-		// if
-	// }
+	function detectarColisaoComBarraPrecisa (dif) {
+		var col = false;
+		if (Math.abs(dif) < 35){
+			vel = atualizaVelocidade (vel);
+			//console.log(dif);
+		} else {
+			if (dif > 35) {  //caso 1: círculo a direita da barra
+				vel = atualizaVelocidade (vel);
+				console.log("direita")
+			}
+			if (dif < 35) {  //caso 2: círculo a esquerda da barra
+				vel = atualizaVelocidade (vel);
+				console.log("esquerda")
+			}
+		}
+	}
 	
 	function detectarColisaoComBarra () {
 		var col = false;
 		if(pos_cir[1] > 470){
 			var dif = (pos_cir[0] - pos_barra);
-			if ((dif < 35)&&(dif > (-35))){
-				col = true; //detectarColisaoComBarraPrecisa();
+			if ((dif < 45)&&(dif > (-45))){
+				detectarColisaoComBarraPrecisa(dif);
+				col = true;
 			}
 		}
 		return col;
@@ -110,6 +123,7 @@
 	function detectarColisao() {
 		var col_par = detectarColisaoComParedes();
 		if (col_par) {
+			vel = atualizaVelocidade (vel);
 			console.log("col_par: " + col_par);
 		}
 		var col_barra = detectarColisaoComBarra();
@@ -122,7 +136,6 @@
 		if (exec) {
 			pos_cir = somaVetorial (pos_cir, vel);
 			detectarColisao();
-			vel = atualizaVelocidade (vel);
 			limpaTela();
 			desenhaCirculo(pos_cir, 10);
 			desenhaBarra(pos_barra);

@@ -128,6 +128,7 @@
 					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
 					if (y >= aux){
 						console.log("Colisão direita em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
+						exec = false;  //dev
 						break;
 					}
 				}
@@ -142,6 +143,7 @@
 					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
 					if (y >= aux){
 						console.log("Colisão esquerda em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
+						exec = false;  //dev
 						break;
 					}
 				}
@@ -188,18 +190,26 @@
 	function pausarResumir (evento) {
 		var tecla = evento.which;
 		if (tecla == 32){ //tecla 32: espaço
-			if (exec == true) {
+			if (exec) {
 				exec = false;
-				console.log (exec);
+				console.log ("Pausado");
 			} else {
 				exec = true;
-				console.log (exec);
+				console.log ("Rodando");
 			}
 		}
 	}
 	
-	document.onmousemove = moveBarra;
-	document.onkeydown = pausarResumir;
+	function mostraCoordenadas (evento){
+		var x  = evento.pageX - tela.offsetLeft;
+		var y = evento.pageY - tela.offsetTop;
+		alert(x + ", " + y);
+	}
+	
+	document.onclick = mostraCoordenadas;	//dev
+	
+	document.onmousemove = moveBarra;		//move a barra junto do mouse
+	document.onkeydown = pausarResumir;		//pausa e despausa o jogo
 
 	setInterval(atualizaTela, 10);
 	limpaTelaInferior();

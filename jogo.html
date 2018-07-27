@@ -1,4 +1,4 @@
-<canvas width="400" height="700"></canvas>
+<canvas width="400" height="500"></canvas>
 
 <script>
 
@@ -45,7 +45,7 @@
 	}
 	
 	function limpaTelaInferior() {
-		pincel.clearRect(0, 480, w, 220);
+		pincel.clearRect(0, 480, w, 20);
 		pincel.fillStyle = 'black';
 		pincel.fillRect(0, 480, w, 20);
 	}
@@ -198,7 +198,7 @@
 		}
 	}
 	
-	tela.onmousemove = moveBarra;
+	document.onmousemove = moveBarra;
 	document.onkeydown = pausarResumir;
 
 	setInterval(atualizaTela, 10);

@@ -91,12 +91,17 @@
 		return (col);
 	}
 	
+	// function detectarColisaoComBarraPrecisa () {
+		// var col = false;
+		// if
+	// }
+	
 	function detectarColisaoComBarra () {
 		var col = false;
 		if(pos_cir[1] > 470){
-			var dif = Math.abs(pos_cir[0] - pos_barra);
-			if (dif < 35){
-				col = true;
+			var dif = (pos_cir[0] - pos_barra);
+			if ((dif < 35)&&(dif > (-35))){
+				col = true; //detectarColisaoComBarraPrecisa();
 			}
 		}
 		return col;
@@ -104,9 +109,13 @@
 	
 	function detectarColisao() {
 		var col_par = detectarColisaoComParedes();
-		if (col_par) console.log("col_par: " + col_par);
+		if (col_par) {
+			console.log("col_par: " + col_par);
+		}
 		var col_barra = detectarColisaoComBarra();
-		if (col_barra) console.log("col_barra: " + col_barra);
+		if (col_barra) {
+			console.log("col_barra: " + col_barra);
+		}
 	}
 	
 	function atualizaTela() {

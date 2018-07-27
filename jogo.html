@@ -2,8 +2,8 @@
 
 <script>
 
-	var w = 400;
-	var h = 500;
+	var w = 400;	//largura total da area de jogo
+	var h = 500;	//altura total da area de jogo
 	var tela = document.querySelector('canvas');
 	var pincel = tela.getContext('2d');
 	pincel.fillStyle = 'lightgray';
@@ -14,17 +14,18 @@
 	var raio = 10;			//raio do círculo
 	var vel = [0.6, 0.6]; 	//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
-	var larg_bar = 70;		//largura da barra
-	var alt_bar = 20;		//altura da barra
+	var w_bar = 70;		//largura da barra
+	var semi_barra = w_bar/2;
+	var h_bar = 20;		//altura da barra
 	
 	function desenhaBarra(x) {
-		if (x < 35) {
-			pos_barra = 35;
+		if (x < semi_barra) {
+			pos_barra = semi_barra;
 		}
-		if (x > 365) {
-			pos_barra = 365;
+		if (x > w-semi_barra) {
+			pos_barra = w-semi_barra;
 		}
-		var canto = pos_barra - 35;
+		var canto = pos_barra - semi_barra;
 		pincel.fillStyle = 'darkgray';
 		pincel.fillRect(canto, 480, 70, 20);
 	}
@@ -85,6 +86,12 @@
 		return v;
 	}
 	
+	function gamerOver () {
+		exec = false;
+		pos_cir = [30, 30];
+		alert("GAMER OVER");
+	}
+	
 	function detectarColisaoComParedes () {
 		var col = false;
 		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < 10)) {
@@ -93,22 +100,25 @@
 		if(pos_cir[1] < 10) {
 			col = true;
 		}
+		if(pos_cir[1] > (h-raio)){
+			gamerOver();
+		}
 		return (col);
 	}
 	
 	function detectarColisaoComBarraPrecisa (dif) {
 		var col = false;
-		if (Math.abs(dif) < 35){
+		if (Math.abs(dif) < semi_barra){
 			vel = atualizaVelocidade (vel);
 			//console.log(dif);
 		} else {
-			if (dif > 35) {  //caso 1: círculo a direita da barra
+			if (dif > semi_barra) {  //caso 1: círculo a direita da barra
 				
 			
 				vel = atualizaVelocidade (vel);
 				console.log("direita")
 			}
-			if (dif < 35) {  //caso 2: círculo a esquerda da barra
+			if (dif < semi_barra) {  //caso 2: círculo a esquerda da barra
 				vel = atualizaVelocidade (vel);
 				console.log("esquerda")
 			}
@@ -119,7 +129,8 @@
 		var col = false;
 		if(pos_cir[1] > 470){
 			var dif = (pos_cir[0] - pos_barra);
-			if ((dif < 45)&&(dif > (-45))){
+			var aux = semi_barra+raio; //criterio para colisao: distancia entre centro do circulo e meio da barra 
+		 	if ((dif < aux)&&(dif > (-aux))){
 				detectarColisaoComBarraPrecisa(dif);
 				col = true;
 			}

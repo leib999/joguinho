@@ -123,21 +123,30 @@
 			if (dif > semi_barra) {  //caso 1: círculo a direita da barra
 				var y = 0;
 				var aux = (h - h_bar);
-				for(var i = (pos_barra+semi_barra-raio); i < (pos_barra+semi_barra+raio); i++){ //escaneia todos os pixels entre (pos_barra-raio) e (pos_barra+semi_barra)
+				for(var i = (pos_barra+semi_barra-raio); i < (pos_barra+semi_barra+raio); i++){ //escaneia todos os pixels entre (pos_barra+semi_barra-raio) e (pos_barra+semi_barra+raio)
 					var delta = (raio*raio) - ((i-pos_cir[0])*(i-pos_cir[0])); 	//geometria analitica
 					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
 					if (y >= aux){
-						console.log("Colisão em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
+						console.log("Colisão direita em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
 						break;
 					}
 				}
 				
 				vel = atualizaVelocidade (vel);
-				console.log("direita")
 			}
 			if (dif < semi_barra) {  //caso 2: círculo a esquerda da barra
+				var y = 0;
+				var aux = (h - h_bar);
+				for(var i = (pos_barra-semi_barra-raio); i < (pos_barra-semi_barra+raio); i++){ //escaneia todos os pixels entre (pos_barra-raio) e (pos_barra+semi_barra)
+					var delta = (raio*raio) - ((i-pos_cir[0])*(i-pos_cir[0])); 	//geometria analitica
+					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
+					if (y >= aux){
+						console.log("Colisão esquerda em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
+						break;
+					}
+				}
+			
 				vel = atualizaVelocidade (vel);
-				console.log("esquerda")
 			}
 		}
 	}
@@ -150,7 +159,6 @@
 		 	if ((dif < aux)&&(dif > (-aux))){
 				detectarColisaoComBarraPrecisa(dif);
 				col = true;
-
 			}
 		}
 	}

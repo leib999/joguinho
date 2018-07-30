@@ -10,9 +10,9 @@
 	pincel.fillRect(0, 0, w, 500);
 	
 	var exec = true;  		//jogo em execução ou pausado
-	var pos_cir = [20, 20]; //posição do centro do círculo
-	var raio = 10;			//raio do círculo
-	var vel = [1.2, 1.2]; 	//velocidade do círculo
+	var pos_cir = [300, 200]; //posição do centro do círculo
+	var raio = 15;			//raio do círculo
+	var vel = [0.8, 0.5]; 	//velocidade do círculo
 	var pos_barra = 0;		//coordenada X do meio da barra
 	var w_bar = 70;		//largura da barra
 	var semi_barra = w_bar/2;
@@ -26,9 +26,9 @@
 		if (x > w-semi_barra) {
 			pos_barra = w-semi_barra;
 		}
-		var canto = pos_barra - semi_barra;
+		var canto = pos_barra - semi_barra;  //coordenada X do canto superior esquerdo do retangulo
 		pincel.fillStyle = 'darkgray';
-		pincel.fillRect(canto, 480, 70, 20);
+		pincel.fillRect(canto, h-h_bar, w_bar, h_bar);
 	}
 	
 	function desenhaCirculo(coords, raio) {
@@ -79,16 +79,16 @@
 	
 	function atualizaVelocidade (v) {
 		
-		if (pos_cir[0] > (w-raio)){
+		if (pos_cir[0] >= (w-raio)){
 			v[0] = -Math.abs(v[0]);
 		}
-		if(pos_cir[0] < 10) {
+		if(pos_cir[0] <= 10) {
 			v[0] = Math.abs(v[0]);
 		}
-		if (pos_cir[1] > 470){
+		if (pos_cir[1] >= h-h_bar-raio){
 			v[1] = -Math.abs(v[0]);
 		}
-		if(pos_cir[1] < 10){
+		if(pos_cir[1] <= raio){
 			v[1] = Math.abs(v[0]);
 		}
 		return v;
@@ -96,16 +96,16 @@
 	
 	function gamerOver () {
 		exec = false;
-		pos_cir = [30, 30];
+		pos_cir = [w/2, 50];
 		alert("GAMER OVER");
 	}
 	
 	function detectarColisaoComParedes () {
 		var col = false;
-		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < 10)) {
+		if ((pos_cir[0] > (w-raio))||(pos_cir[0] < raio)) {
 			col = true;
 		}
-		if(pos_cir[1] < 10) {
+		if(pos_cir[1] < raio) {
 			col = true;
 		}
 		if(pos_cir[1] > (h-raio)){
@@ -116,46 +116,49 @@
 	
 	function detectarColisaoComBarraPrecisa (dif) {
 		var col = false;
-		if (Math.abs(dif) < semi_barra){
+		if (Math.abs(dif) <= semi_barra){
 			vel = atualizaVelocidade (vel);
-			//console.log(dif);
+			console.log("Colisao simples com barra");
 		} else {
 			if (dif > semi_barra) {  //caso 1: círculo a direita da barra
 				var y = 0;
 				var aux = (h - h_bar);
-				for(var i = (pos_barra+semi_barra-raio); i < (pos_barra+semi_barra+raio); i++){ //escaneia todos os pixels entre (pos_barra+semi_barra-raio) e (pos_barra+semi_barra+raio)
+				for(var i = Math.floor(pos_barra+semi_barra-raio); i <= Math.ceil(pos_barra+semi_barra); i++){ //escaneia da esquerda para direita todos os pixels entre (pos_barra+semi_barra-raio) e (pos_barra+semi_barra)
 					var delta = (raio*raio) - ((i-pos_cir[0])*(i-pos_cir[0])); 	//geometria analitica
-					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
+					y = Math.ceil(Math.sqrt(delta) + pos_cir[1]);		//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
 					if (y >= aux){
-						console.log("Colisão direita em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
-						exec = false;  //dev
+						console.log("Colisão direita em " + i + ", " + y);
+						//exec = false;  //dev
+						exec = false;
+						vel = atualizaVelocidade (vel);
 						break;
 					}
 				}
 				
-				vel = atualizaVelocidade (vel);
 			}
 			if (dif < semi_barra) {  //caso 2: círculo a esquerda da barra
 				var y = 0;
-				var aux = (h - h_bar);
-				for(var i = (pos_barra-semi_barra-raio); i < (pos_barra-semi_barra+raio); i++){ //escaneia todos os pixels entre (pos_barra-raio) e (pos_barra+semi_barra)
+				var aux = (h - h_bar); //coordenada Y do topo da barra
+				console.log((pos_cir[0]+raio) + ", " + (pos_barra-semi_barra));
+				for(var i = Math.ceil(pos_cir[0]+raio); i >= Math.floor(pos_barra-semi_barra); i--){ //escaneia da direita pra esquerda todos os pixels entre (pos_barra+raio) e (pos_barra-semi_barra)
 					var delta = (raio*raio) - ((i-pos_cir[0])*(i-pos_cir[0])); 	//geometria analitica
-					y = Math.sqrt(delta) + pos_cir[1];							//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
+					y = Math.ceil(Math.sqrt(delta) + pos_cir[1]);		//a detecção de colisão é feita usando a formula do circulo (x-cx)^2 + (y-cy)^2 = r^2
 					if (y >= aux){
-						console.log("Colisão esquerda em " + i/*(pos_barra+semi_barra)*/ + ", " + y);
-						exec = false;  //dev
+						console.log("Colisão esquerda em " + i + ", " + y);
+						//exec = false;  //dev
+						exec = false;
+						vel = atualizaVelocidade (vel);
 						break;
 					}
 				}
-			
-				vel = atualizaVelocidade (vel);
+				
 			}
 		}
 	}
 	
 	function detectarColisaoComBarra () {
-		col_barra = false;
-		if(pos_cir[1] > 470){
+		col = false;
+		if(pos_cir[1] >= (h-h_bar-raio)){ //se o circulo chegar ao funda da tela, na altura da barra, avaliar
 			var dif = (pos_cir[0] - pos_barra);
 			var aux = semi_barra+raio; //criterio para colisao: distancia entre centro do circulo e meio da barra 
 		 	if ((dif < aux)&&(dif > (-aux))){
@@ -163,27 +166,28 @@
 				col = true;
 			}
 		}
+		return col;
 	}
 	
 	function detectarColisao() {
 		var col_par = detectarColisaoComParedes();
 		if (col_par) {
 			vel = atualizaVelocidade (vel);
-			console.log("col_par: " + col_par);
+			//console.log("col_par: " + col_par);
 		}
 		var col_barra = detectarColisaoComBarra();
-		if (col_barra) {
-			console.log("col_barra: " + col_barra);
-		}
+		// if (col_barra) {
+			// console.log("col_barra: " + col_barra);
+		// }
 	}
 	
 	function atualizaTela() {
 		if (exec) {
-			pos_cir = somaVetorial (pos_cir, vel);
 			detectarColisao();
 			limpaTela();
-			desenhaCirculo(pos_cir, 10);
+			desenhaCirculo(pos_cir, raio);
 			desenhaBarra(pos_barra);
+			pos_cir = somaVetorial (pos_cir, vel);
 		}
 	}
 	
@@ -211,7 +215,7 @@
 	document.onmousemove = moveBarra;		//move a barra junto do mouse
 	document.onkeydown = pausarResumir;		//pausa e despausa o jogo
 
-	setInterval(atualizaTela, 10);
+	setInterval(atualizaTela, 1);
 	limpaTelaInferior();
 	
 	

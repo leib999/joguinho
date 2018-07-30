@@ -4,20 +4,22 @@
 
 	var w = 400;	//largura total da area de jogo
 	var h = 500;	//altura total da area de jogo
-	var tela = document.querySelector('canvas');
-	var pincel = tela.getContext('2d');
+	var tela = document.querySelector("canvas");
+	var pincel = tela.getContext("2d");
 	pincel.fillStyle = 'lightgray';
-	pincel.fillRect(0, 0, w, 500);
+	pincel.fillRect(0, 0, w, h);
 	
 	var exec = true;  		//jogo em execução ou pausado
-	var pos_cir = [300, 200]; //posição do centro do círculo
+	var pos_cir = [w/2, 100]; //posição do centro do círculo
 	var raio = 15;			//raio do círculo
-	var vel = [0.8, 0.5]; 	//velocidade do círculo
+	var vel = [1, 1]; 	//velocidade do círculo
+	
 	var pos_barra = 0;		//coordenada X do meio da barra
 	var w_bar = 70;		//largura da barra
 	var semi_barra = w_bar/2;
 	var h_bar = 20;		//altura da barra
-
+	
+	var pontos = 0;
 	
 	function desenhaBarra(x) {
 		if (x < semi_barra) {
@@ -39,15 +41,15 @@
 	}
 	
 	function limpaTela() {
-		pincel.clearRect(0, 0, w, 480);
+		pincel.clearRect(0, 0, w, h-h_bar);
 		pincel.fillStyle = 'lightgray';
-		pincel.fillRect(0, 0, w, 480);
+		pincel.fillRect(0, 0, w, h-h_bar);
 	}
 	
 	function limpaTelaInferior() {
-		pincel.clearRect(0, 480, w, 20);
+		pincel.clearRect(0, h-h_bar, w, h_bar);
 		pincel.fillStyle = 'black';
-		pincel.fillRect(0, 480, w, 20);
+		pincel.fillRect(0, h-h_bar, w, h_bar);
 	}
 	
 	function moveBarra (evento) {
@@ -76,13 +78,12 @@
 			return ["DEU MERDA, VETORES DE TAMANHOS DIFERENTES", "hmmm"];
 		}
 	}
-	
+
 	function atualizaVelocidade (v) {
-		
 		if (pos_cir[0] >= (w-raio)){
 			v[0] = -Math.abs(v[0]);
 		}
-		if(pos_cir[0] <= 10) {
+		if(pos_cir[0] <= raio) {
 			v[0] = Math.abs(v[0]);
 		}
 		if (pos_cir[1] >= h-h_bar-raio){
@@ -96,8 +97,10 @@
 	
 	function gamerOver () {
 		exec = false;
-		pos_cir = [w/2, 50];
-		alert("GAMER OVER");
+		pos_cir = [w/2, 50];	//nova posição inicial
+		alert("GAMER OVER. Você fez " + pontos + " pontos.");
+		pontos = 0;
+		vel = [1, 1];
 	}
 	
 	function detectarColisaoComParedes () {
@@ -129,7 +132,6 @@
 					if (y >= aux){
 						console.log("Colisão direita em " + i + ", " + y);
 						//exec = false;  //dev
-						exec = false;
 						vel = atualizaVelocidade (vel);
 						break;
 					}
@@ -146,7 +148,6 @@
 					if (y >= aux){
 						console.log("Colisão esquerda em " + i + ", " + y);
 						//exec = false;  //dev
-						exec = false;
 						vel = atualizaVelocidade (vel);
 						break;
 					}
@@ -176,15 +177,17 @@
 			//console.log("col_par: " + col_par);
 		}
 		var col_barra = detectarColisaoComBarra();
-		// if (col_barra) {
+		 if (col_barra) {
+			vel = [vel[0]*1.1, vel[1]*1.1];
+			pontos++;
 			// console.log("col_barra: " + col_barra);
-		// }
+		 }
 	}
 	
 	function atualizaTela() {
 		if (exec) {
-			detectarColisao();
 			limpaTela();
+			detectarColisao();
 			desenhaCirculo(pos_cir, raio);
 			desenhaBarra(pos_barra);
 			pos_cir = somaVetorial (pos_cir, vel);
@@ -210,7 +213,7 @@
 		alert(x + ", " + y);
 	}
 	
-	document.onclick = mostraCoordenadas;	//dev
+	tela.onclick = mostraCoordenadas;	//dev
 	
 	document.onmousemove = moveBarra;		//move a barra junto do mouse
 	document.onkeydown = pausarResumir;		//pausa e despausa o jogo
